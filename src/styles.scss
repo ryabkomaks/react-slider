@@ -1,0 +1,71 @@
+$wrapWidth: 600px;
+$wrapHeigth: 50px;
+$controlHeight: 25px;
+$controlTop: ($wrapHeigth - $controlHeight)/2;
+
+  @mixin sl-strap($bgColor) {
+    content: '';
+    position: absolute;
+    height: 3px;
+    top: 50%;
+    background: $bgColor;
+  }
+
+.slider-wrap {
+  width: $wrapWidth;
+  height: $wrapHeigth;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 1s ease;
+  
+  &:before {
+    @include sl-strap(lightgray);
+    left: 0;
+    right: 0;
+  }
+  
+  .slider {
+    width: 25px;
+    height: 25px;
+    position: relative;
+    top: $controlTop;
+    
+    &:before {
+      @include sl-strap(orange);
+      right: 0;
+      width: $wrapWidth;
+      overflow: hidden;
+    }
+    
+    &:after {
+      @include sl-strap(lightgray);
+      left: 0;
+      width: 12.5px;
+      overflow: hidden;
+    }
+    
+    &__element {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      position: absolute;
+      background: orange;
+      z-index: 3000
+    }
+  }
+  
+  .slider-range {
+    margin-top: 10px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    &__elements {
+      &-disabled {
+        color: lightgray
+      }
+    }
+  }
+}
