@@ -51,7 +51,6 @@ export class ReactSlider extends React.Component {
 
         let offset = this.calculateOffset(target, this.slider.offsetWidth, wrapWidth)
         
-        // this.slider.style.left = `${target - offset}px`;
         this.setState({left: `${target - offset}px`})
     }
 
@@ -70,8 +69,16 @@ export class ReactSlider extends React.Component {
     }
 
     setXPosDynamic(pos) {
-        // this.slider.style.left = `${pos - this.slider.offsetWidth/2}px`;
-        this.setState({left: `${pos - this.slider.offsetWidth/2}px`})
+        const wrapWidth = this.sliderWrapper.offsetWidth      
+        const possibleTarget = pos - this.slider.offsetWidth/2
+        let target = 0
+        
+        if (possibleTarget > wrapWidth - this.slider.offsetWidth) {
+            target = wrapWidth - this.slider.offsetWidth
+        } else if (possibleTarget > 0) {
+            target = pos - this.slider.offsetWidth/2
+        }
+        this.setState({left: `${target}px`})
     }
 
     renderRange() {
