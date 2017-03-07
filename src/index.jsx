@@ -13,7 +13,10 @@ export class ReactSlider extends React.Component {
         super(props)
 
         this.dragStarted = false
+        this.lastTouch = null
+        
         this.range = props.range || []
+        this.state = { left: '0px' }
     }
 
     startDrag(event) {
@@ -22,15 +25,20 @@ export class ReactSlider extends React.Component {
 
     drag(event) {
         if (this.dragStarted) {
-            this.setXPosDynamic(event.clientX)
+            this.setXPosDynamic(this.getXCoord(event))
         }
     }
 
     stopDrag(event) {
         if (this.dragStarted) {
-            this.setXPos(event.clientX)
+            this.setXPos(this.getXCoord(event))
             this.dragStarted = false
         }
+    }
+
+    getXCoord(event) {
+        this.lastTouch = event.touches && event.touches[0] || this.lastTouch
+        return event.touches ? this.lastTouch.clientX : event.clientX
     }
 
     setXPos(pos) {
@@ -43,7 +51,8 @@ export class ReactSlider extends React.Component {
 
         let offset = this.calculateOffset(target, this.slider.offsetWidth, wrapWidth)
         
-        this.slider.style.left = `${target - offset}px`;
+        // this.slider.style.left = `${target - offset}px`;
+        this.setState({left: `${target - offset}px`})
     }
 
     calculateOffset(targetPoint, sliderWidth, endPoint, startPoint = 0) {      
@@ -61,7 +70,8 @@ export class ReactSlider extends React.Component {
     }
 
     setXPosDynamic(pos) {
-        this.slider.style.left = `${pos - this.slider.offsetWidth/2}px`;
+        // this.slider.style.left = `${pos - this.slider.offsetWidth/2}px`;
+        this.setState({left: `${pos - this.slider.offsetWidth/2}px`})
     }
 
     renderRange() {
@@ -89,6 +99,7 @@ export class ReactSlider extends React.Component {
                 onTouchEnd={(e) => this.stopDrag(e)}
                 ref={(sliderWrapper) => { this.sliderWrapper = sliderWrapper }}>
                 <div className="slider"
+                    style = { { left: this.state.left } }
                     onMouseDown={(e) => this.startDrag(e)}
                     onTouchStart={(e) => this.startDrag(e)}
                     ref={(slider) => { this.slider = slider }}>
