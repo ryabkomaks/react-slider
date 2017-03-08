@@ -2,7 +2,7 @@ const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
-  entry: './index.js',
+  entry: path.resolve(__dirname, 'index.js'),
   resolve: {
     extensions: ['.js', '.jsx']
   },
@@ -32,5 +32,9 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
+  },
+  devServer: {
+    compress: true,
+    port: 9000
   }
 }
