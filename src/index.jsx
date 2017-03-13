@@ -3,8 +3,13 @@ import ReactDOM from 'react-dom'
 import {styles} from './styles.scss'
 
 const SELECTORS = {
-    SLIDER_WRAP: '.slider-wrap',
-    SLIDER: '.slider'
+    SLIDER_WRAP: '.market-slider',
+    SLIDER: '.slider',
+    SLIDER_HIGHLIGHTED: '.market-slider__path_highlighted',
+    SLIDER_MARKER: '.market-slider__marker',
+    SLIDER_RANGE: '.market-slider__range',
+    SLIDER_RANGE_ITEM: '.market-slider__range-item',
+    SLIDER_RANGE_ITEM_ACTIVE: '.market-slider__range-item_active'
 }
 
 const DEFAULT_RANGE = [{
@@ -133,12 +138,12 @@ export class ReactSlider extends React.Component {
 
     renderRange() {
         return (
-            <div className="slider-range">
+            <div className="market-slider__range">
                 {this.range.map((item, idx) => {
-                    const mod = item.enabled ? 'enabled' : 'disabled'
+                    const mod = item.enabled ? 'active' : ''
                     return (
                         <span key={idx}
-                            className={`slider-range__elements slider-range__elements-${mod}`}
+                            className={`market-slider__range-item slider-range__elements_${mod}`}
                             onClick={(e) => this.handleRangeItemClick(e, item.value, idx)}>
                             {item.value}
                         </span>
@@ -151,20 +156,24 @@ export class ReactSlider extends React.Component {
     render() {
         return (
             <div>
-                <h3>{this.state.value}</h3>
-                <div className="slider-wrap"
+                <h3 className={"market-slider__label"}>{this.state.value}</h3>
+                <div className="market-slider"
                     onClick={(e) => this.handleClick(e)}
                     onMouseMove={(e) => this.drag(e)}
                     onTouchMove={(e) => this.drag(e)}
                     onMouseUp={(e) => this.stopDrag(e)}
                     onTouchEnd={(e) => this.stopDrag(e)}
                     ref={(sliderWrapper) => { this.sliderWrapper = sliderWrapper }}>
-                    <div className="slider"
-                        style = { { left: this.state.left } }
-                        onMouseDown={(e) => this.startDrag(e)}
-                        onTouchStart={(e) => this.startDrag(e)}
-                        ref={(slider) => { this.slider = slider }}>
-                        <div className="slider__element"></div>
+
+                    <div className={"market-slider__path"}>
+                        <div className={"market-slider__path_highlighted"} style = { { width: this.state.left } }>
+                        </div>
+                        <div className={"market-slider__marker"}
+                            style = { { left: this.state.left } }
+                            onMouseDown={(e) => this.startDrag(e)}
+                            onTouchStart={(e) => this.startDrag(e)}
+                            ref={(slider) => { this.slider = slider }}>
+                        </div>
                     </div>
                     {this.renderRange()}
                 </div>

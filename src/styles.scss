@@ -1,71 +1,115 @@
-$wrapWidth: 600px;
-$wrapHeigth: 50px;
-$controlHeight: 25px;
-$controlTop: ($wrapHeigth - $controlHeight)/2;
+body 
+{
+  padding: 0;
+  // background-color: #707070;
+}
 
-  @mixin sl-strap($bgColor) {
-    content: '';
-    position: absolute;
-    height: 3px;
-    top: 50%;
-    background: $bgColor;
-  }
+$market-slider-width: 600px;
 
-.slider-wrap {
-  width: $wrapWidth;
-  height: $wrapHeigth;
-  position: relative;
-  overflow: hidden;
+$market-slider-path-height: 4px;
+$market-slider-path-bg-color: #dfdfdf;
+$market-slider-path-highlighted-bg-color: #f27422;
+$market-slider-path-border-radius: $market-slider-path-height/2;
+
+$market-slider-marker-width: 22px;
+$market-slider-marker-height: $market-slider-marker-width;
+$market-slider-marker-bg-color: #f59120;
+
+$market-slider-range-item-font-size-mobile: 15px;
+$market-slider-range-item-font-size-desktop: 14px;
+$market-slider-range-inner-padding-mobile: ($market-slider-marker-width - $market-slider-range-item-font-size-mobile/2)/2;
+$market-slider-range-inner-padding-desktop: ($market-slider-marker-width - $market-slider-range-item-font-size-desktop/2)/2;
+$market-slider-range-item-color: #999;
+$market-slider-range-item-active-color: #000;
+$market-slider-range-segmentation-mark-width: 1px;
+$market-slider-range-segmentation-mark-height: 3px;
+$market-slider-range-segmentation-mark-bg: #999;
+$market-slider-range-segmentation-mark-active-bg: $market-slider-range-segmentation-mark-bg;
+$market-slider-range-vertical-offset: 11px;
+
+.market-slider
+{
+  width: $market-slider-width;
+  max-width: 100%;
   cursor: pointer;
-  transition: all 1s ease;
   
-  &:before {
-    @include sl-strap(lightgray);
-    left: 0;
-    right: 0;
-  }
-  
-  .slider {
-    width: 25px;
-    height: 25px;
-    position: relative;
-    top: $controlTop;
-    
-    &:before {
-      @include sl-strap(orange);
-      right: 0;
-      width: $wrapWidth;
-      overflow: hidden;
-    }
-    
-    &:after {
-      @include sl-strap(lightgray);
-      left: 0;
-      width: 12.5px;
-      overflow: hidden;
-    }
-    
-    &__element {
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      position: absolute;
-      background: orange;
-      z-index: 3000
-    }
-  }
-  
-  .slider-range {
-    margin-top: 10px;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
+  &__label
+  {
 
-    &__elements {
-      &-disabled {
-        color: lightgray
-      }
+  }
+  
+  &__path
+  {
+    position: relative;
+    height: $market-slider-path-height;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    background-color: $market-slider-path-bg-color;
+    border-radius: $market-slider-path-border-radius;
+
+    &_highlighted
+    {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      background-color: $market-slider-path-highlighted-bg-color;
+    }
+  }
+
+  &__marker
+  {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: $market-slider-marker-width;
+    height: $market-slider-marker-height;
+    border-radius: 50%;
+    background-color: $market-slider-marker-bg-color;
+  }
+
+  &__range
+  {
+    display: flex;
+    justify-content: space-between;
+    padding-right: floor($market-slider-range-inner-padding-mobile);
+    padding-left: floor($market-slider-range-inner-padding-mobile);
+
+    // :global(.media_desktop) &
+    @media (min-width: 768px)
+    {
+      padding-right: floor($market-slider-range-inner-padding-desktop);
+      padding-left: floor($market-slider-range-inner-padding-desktop);
+    } 
+  }
+
+  &__range-item
+  {
+    position: relative;
+    padding-top: $market-slider-range-segmentation-mark-height + 5px;
+    font-size: $market-slider-range-item-font-size-mobile;
+    
+    &::before
+    {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: $market-slider-range-segmentation-mark-width;
+      height: $market-slider-range-segmentation-mark-height;
+      background-color: $market-slider-range-segmentation-mark-bg;
+    }
+
+    &_active
+    {
+
+    }
+
+    // :global(.media_desktop) &
+    @media (min-width: 768px)
+    {
+      font-size: $market-slider-range-item-font-size-desktop;
     }
   }
 }
