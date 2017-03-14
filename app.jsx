@@ -16,6 +16,26 @@ ReactDOM.render(
     {
       value: 2,
       enabled: false
+    },
+    {
+      value: 3,
+      enabled: false
+    },
+    {
+      value: 4,
+      enabled: false
+    },
+    {
+      value: 5,
+      enabled: false
+    },
+    {
+      value: 6,
+      enabled: false
+    },
+    {
+      value: 7,
+      enabled: false
     }
   ]}/>,
   document.getElementById('demo_0')
@@ -76,7 +96,7 @@ ReactDOM.render(
       enabled: true
     },
     {
-      value: 100,
+      value: 6,
       enabled: true
     }
   ]}/>,

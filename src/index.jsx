@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import {styles} from './styles.scss'
 
 const SELECTORS = {
-    SLIDER_WRAP: '.market-slider',
+    SLIDER_WRAP: '.market-slider__item',
     SLIDER: '.slider',
     SLIDER_HIGHLIGHTED: '.market-slider__path_highlighted',
     SLIDER_MARKER: '.market-slider__marker',
@@ -156,14 +156,15 @@ export class ReactSlider extends React.Component {
     render() {
         return (
             <div>
-                <h3 className={"market-slider__label"}>{this.state.value}</h3>
-                <div className="market-slider"
+                <div className="market-slider__item"
                     onClick={(e) => this.handleClick(e)}
                     onMouseMove={(e) => this.drag(e)}
                     onTouchMove={(e) => this.drag(e)}
                     onMouseUp={(e) => this.stopDrag(e)}
                     onTouchEnd={(e) => this.stopDrag(e)}
                     ref={(sliderWrapper) => { this.sliderWrapper = sliderWrapper }}>
+
+                    <h3 className={"market-slider__label"}>{this.state.value}</h3>
 
                     <div className={"market-slider__path"}>
                         <div className={"market-slider__path_highlighted"} style = { { width: this.state.left } }>

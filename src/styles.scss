@@ -1,10 +1,27 @@
 body 
 {
   padding: 0;
-  // background-color: #707070;
+  min-width: 320px;
+  font-family: 'tahoma';
+  background-color: #e5e5e5;
+}
+.market-slider__label
+{
+  margin: 0;
 }
 
-$market-slider-width: 600px;
+$market-slider-br: 3px;
+
+$market-slider-container-bg: #fff;
+
+$market-slider-score-font-size: 22px;
+$market-slider-score-color: #484d5a;
+$market-slider-score-item-shift: 9px;
+
+$market-slider-width: 100%;
+
+$market-slider-label-font-size: 16px;
+$market-slider-label-color: #363a44;
 
 $market-slider-path-height: 4px;
 $market-slider-path-bg-color: #dfdfdf;
@@ -14,35 +31,73 @@ $market-slider-path-border-radius: $market-slider-path-height/2;
 $market-slider-marker-width: 22px;
 $market-slider-marker-height: $market-slider-marker-width;
 $market-slider-marker-bg-color: #f59120;
+$market-slider-marker-shadow-width: 5px;
+//sass
+$market-slider-marker-shadow-opacity: .8;
+$market-slider-marker-shadow-color: transparentize(#aaa, $market-slider-marker-shadow-opacity);
+// less
+// $market-slider-marker-shadow-opacity: 20%;
+// $market-slider-marker-shadow-color: fade(#aaa, $market-slider-marker-border-opacity);
 
-$market-slider-range-item-font-size-mobile: 15px;
-$market-slider-range-item-font-size-desktop: 14px;
-$market-slider-range-inner-padding-mobile: ($market-slider-marker-width - $market-slider-range-item-font-size-mobile/2)/2;
-$market-slider-range-inner-padding-desktop: ($market-slider-marker-width - $market-slider-range-item-font-size-desktop/2)/2;
+$market-slider-range-item-font-size-mobile: 14px;
+$market-slider-range-item-font-size-desktop: 13px;
+$market-slider-range-item-shift-mobile: ($market-slider-marker-width - $market-slider-range-item-font-size-mobile/2)/2;
+$market-slider-range-item-shift-desktop: ($market-slider-marker-width - $market-slider-range-item-font-size-desktop/2)/2;
 $market-slider-range-item-color: #999;
 $market-slider-range-item-active-color: #000;
 $market-slider-range-segmentation-mark-width: 1px;
 $market-slider-range-segmentation-mark-height: 3px;
-$market-slider-range-segmentation-mark-bg: #999;
+$market-slider-range-segmentation-mark-bg: $market-slider-range-item-color;
 $market-slider-range-segmentation-mark-active-bg: $market-slider-range-segmentation-mark-bg;
 $market-slider-range-vertical-offset: 11px;
 
+$market-slider-result-bg: #ececec;
+$market-slider-result-odd-height-mobile: 56px;
+$market-slider-result-odd-height-desktop: 40px;
+$market-slider-result-odd-bg: #fff;
+$market-slider-result-odd-br: 3px;
+$market-slider-result-odd-font-size-mobile: 16px;
+$market-slider-result-odd-font-size-desktop: 14px;
+$market-slider-result-odd-color: #000;
+
 .market-slider
 {
-  width: $market-slider-width;
-  max-width: 100%;
-  cursor: pointer;
-  
-  &__label
-  {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  border-radius: $market-slider-br;
 
+  // tmp
+  margin-bottom: 20px;
+  // EO tmp
+  &__container
+  {
+    display: flex;
+    align-items: center;
+    padding: 25px 24px;
+    background-color: $market-slider-container-bg;
   }
   
+  // Slider
+  &__item
+  {
+    flex: 1;
+    width: $market-slider-width;
+    max-width: 100%;
+    cursor: pointer;
+  }
+
+  &__label
+  {
+    font-size: $market-slider-label-font-size;
+    color: $market-slider-label-color;
+  }
+
   &__path
   {
     position: relative;
     height: $market-slider-path-height;
-    margin-top: 12px;
+    margin-top: 15px;
     margin-bottom: 12px;
     background-color: $market-slider-path-bg-color;
     border-radius: $market-slider-path-border-radius;
@@ -66,6 +121,7 @@ $market-slider-range-vertical-offset: 11px;
     width: $market-slider-marker-width;
     height: $market-slider-marker-height;
     border-radius: 50%;
+    box-shadow: 0 0 0 $market-slider-marker-shadow-width $market-slider-marker-shadow-color;
     background-color: $market-slider-marker-bg-color;
   }
 
@@ -73,15 +129,15 @@ $market-slider-range-vertical-offset: 11px;
   {
     display: flex;
     justify-content: space-between;
-    padding-right: floor($market-slider-range-inner-padding-mobile);
-    padding-left: floor($market-slider-range-inner-padding-mobile);
+    margin-right: $market-slider-range-item-shift-mobile;
+    margin-left: $market-slider-range-item-shift-mobile;
 
     // :global(.media_desktop) &
     @media (min-width: 768px)
     {
-      padding-right: floor($market-slider-range-inner-padding-desktop);
-      padding-left: floor($market-slider-range-inner-padding-desktop);
-    } 
+      margin-right: $market-slider-range-item-shift-desktop;
+      margin-left: $market-slider-range-item-shift-desktop;
+    }
   }
 
   &__range-item
@@ -89,6 +145,7 @@ $market-slider-range-vertical-offset: 11px;
     position: relative;
     padding-top: $market-slider-range-segmentation-mark-height + 5px;
     font-size: $market-slider-range-item-font-size-mobile;
+    color: $market-slider-range-item-color;
     
     &::before
     {
@@ -103,7 +160,7 @@ $market-slider-range-vertical-offset: 11px;
 
     &_active
     {
-
+      color: $market-slider-range-item-active-color;
     }
 
     // :global(.media_desktop) &
@@ -112,4 +169,64 @@ $market-slider-range-vertical-offset: 11px;
       font-size: $market-slider-range-item-font-size-desktop;
     }
   }
+  // EO Slider
+  
+  // Slider Score 
+  &__score
+  {
+    padding-right: 19px;
+    padding-left: 19px;
+    font-size: $market-slider-score-font-size;
+    color: $market-slider-score-color;
+  }
+
+  &__score-item
+  {
+    margin-right: $market-slider-score-item-shift;
+    margin-left: $market-slider-score-item-shift;
+  }
+  // EO Slider Score
+
+  // Slider result
+  &__result
+  {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    background-color: $market-slider-result-bg;
+  }
+
+  &__result-odd
+  {
+    padding-right: 17px;
+    padding-left: 17px;
+    border-radius: $market-slider-result-odd-br;
+    background-color: $market-slider-result-odd-bg;
+    font-size: $market-slider-result-odd-font-size-mobile;
+    line-height: $market-slider-result-odd-height-mobile;
+    color: $market-slider-result-odd-color;
+
+    // :global(.media_desktop) &
+    @media (min-width: 768px)
+    {
+      font-size: $market-slider-result-odd-font-size-desktop;
+      line-height: $market-slider-result-odd-height-desktop;
+    }
+  }
+
+  &__result-score
+  {
+    flex: 1;
+
+    &_a
+    {
+
+    }
+
+    &_b
+    {
+      
+    }
+  }
+  // EO Slider result
 }
