@@ -59,6 +59,35 @@ $market-slider-result-odd-br: 3px;
 $market-slider-result-odd-font-size-mobile: 16px;
 $market-slider-result-odd-font-size-desktop: 14px;
 $market-slider-result-odd-color: #000;
+$market-slider-result-max-score-number: 10;
+$market-slider-result-score-item-width: 25px;
+$market-slider-result-score-item-height: $market-slider-result-score-item-width;
+$market-slider-result-score-item-overlay-gap: 9px;
+$market-slider-result-score-item-animation-duration: 400ms;
+
+@keyframes score_item_animation
+{
+  from
+  {
+    opacity: 0;
+  }
+
+  to
+  {
+    opacity: 1;
+  }
+}
+
+// less
+// .score-overlay-layout (@i) when (@i > 0)
+// {
+//   &:nth-child(@{i})
+//   {
+//     z-index: @iterations - @i;
+//   }
+//   .score-overlay-layout(@i - 1);
+// }
+
 
 .market-slider
 {
@@ -200,6 +229,8 @@ $market-slider-result-odd-color: #000;
   {
     padding-right: 17px;
     padding-left: 17px;
+    margin-right: 20px;
+    margin-left: 20px;
     border-radius: $market-slider-result-odd-br;
     background-color: $market-slider-result-odd-bg;
     font-size: $market-slider-result-odd-font-size-mobile;
@@ -209,6 +240,8 @@ $market-slider-result-odd-color: #000;
     // :global(.media_desktop) &
     @media (min-width: 768px)
     {
+      margin-right: 13px;
+      margin-left: 13px;
       font-size: $market-slider-result-odd-font-size-desktop;
       line-height: $market-slider-result-odd-height-desktop;
     }
@@ -217,16 +250,43 @@ $market-slider-result-odd-color: #000;
   &__result-score
   {
     flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
 
-    &_a
+  &__result-item
+  {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: $market-slider-result-score-item-width;
+    height: $market-slider-result-score-item-height;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDE0IDc5LjE1Njc5NywgMjAxNC8wOC8yMC0wOTo1MzowMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjVGNTg5RkMwMEEzMzExRTdCMUQ2ODc4QzNEMDk3NjY2IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjVGNTg5RkMxMEEzMzExRTdCMUQ2ODc4QzNEMDk3NjY2Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NUY1ODlGQkUwQTMzMTFFN0IxRDY4NzhDM0QwOTc2NjYiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NUY1ODlGQkYwQTMzMTFFN0IxRDY4NzhDM0QwOTc2NjYiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5+c+UjAAADuElEQVR42rRWOUhcYRCeXY/1ZsUTb0U0XoVYaqOIoqyIWKX1YBGxTJkuXQoFQWy00MJOi42FiKwaGxEVD0wUFTzxThox8ZrMN7z3cLO7miY/DO/t/898c7xv5l8bvbKurq6K5PFepFqkVMRpHP0U2RTxiowlJiZ+C4ZhCwL8Th6fRVz4fXt7S1tbW3R5eannSUlJVFxcTNHR0abJF5EP4ug7vbUE3C3yS8B4cHCQ09PT2WazcVhYGEdERKiEhobqHs76+/sZurCB7Vvgn0R4dXWVq6qqOD4+nnNyciwHoqKCd+xlZ2ez0+nkyspKtYEtMF6LnOfn51lS5dbWVt7d3VWjlZUV7urqUmBIZ2cnLy8v69ne3p7qJiQk8NzcnOnE7VdzpIgokH5bW5up6CMdHR0qgc7gFLZGJr+M70h2wwc+qEOMiZmpsbExYJYhISEqgVZzc7Patre346fDwCS7QUXXzMwMra2tkZSAbm5u/ACenp5IykJLS0v0+Pjod35+fk7h4eG0vr5OwAImsO0Gz6mvr08Nn5+fVfnlOjk5obq6Og1gY2ODamtr6fDw0Efn+vpabYHR29trbr9H/b8eHx9r/cAQsKOgoIAlCq3tyMgIR0VFsZTGYhHeQdehoSHVWVxc5KKiIrbb7XoOLGACGw5+TE9PWzSMiYlRVjgcDs7IyPAB/lsAVFhYqLZNTU0cFxdnURqYwA5F+8sLyYHWf2JigsrLy7VM1dXVWvtgC+U4OzvTmqOzUb76+nqTmXg4lUVQenh4oOHhYQXHSklJoe7ubpJMgjrAR+3p6VFwrLKyMpKSKtbR0RGZNP0pNafY2FhqaGjwAZC06f7+PqgDALlcLp89EABYJSUlOhThYBOe7+7uSDrXRzkrK4vy8vKCOsjMzKT8/HyfPWAAq7QUw5c24cArLCGZPTQ+Pu4H0tLSErC5hDGa4d8LGMAyJq0XH3lM5CO62O12a9Q1NTWUnJys5fF6vSRDj4QtPkA7Ozu0sLCg0UZGRuooh+7AwADJFDbVxswv7gGfX9JSZj6LM6Xh/v6+3+w5ODhgqbPaSDBWf6SlpZk6npez6IPIb4/HQygXKIuIpFk0I+G3XylQgtzcXDo9PaWLiwu1ge3k5CSOfxuY/uN6dnaWhQVWVyIqceyXwdTUlJUtdGED24DjOtCFI/1gdTfKIL1igUvEehGZlw9037xwAl2Zo6OjXFFRoUCIEDWH4B17OIPOa1fmP1/629vb2vFYqampyqp/ufRt//tvyx8BBgCGz87UOT3DsAAAAABJRU5ErkJggg==');
+    background-repeat: no-repeat;
+
+    &_left
     {
-
+      right: 100%;
     }
 
-    &_b
+    &_right
     {
-      
+      left: 100%;
     }
+    
+    // sass
+    $iterations: $market-slider-result-max-score-number;
+    
+    @for $i from 1 through $iterations
+    {
+      &:nth-child(#{$i})
+      {
+        z-index: $iterations - $i;
+      }
+    }
+
+    // less
+    // .score-overlay-layout (@market-slider-result-max-score-number);
   }
   // EO Slider result
 }
